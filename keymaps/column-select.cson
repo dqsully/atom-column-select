@@ -1,0 +1,33 @@
+# Keybindings require three things to be fully defined: A selector that is
+# matched against the focused element, the keystroke and the command to
+# execute.
+#
+# Below is a basic keybinding which registers on all platforms by applying to
+# the root workspace element.
+
+# For more detailed documentation see
+# https://atom.io/docs/latest/advanced/keymaps
+
+'.platform-win32 .editor':
+  'ctrl-alt-up': 'column-select:up'
+  'ctrl-alt-down': 'column-select:down'
+  'ctrl-alt-pageup': 'column-select:pageup'
+  'ctrl-alt-pagedown': 'column-select:pagedown'
+  'ctrl-alt-home': 'column-select:top'
+  'ctrl-alt-end': 'column-select:bottom'
+
+'.platform-linux .editor':
+  'alt-shift-up': 'column-select:up'
+  'alt-shift-down': 'column-select:down'
+  'alt-shift-pageup': 'column-select:pageup'
+  'alt-shift-pagedown': 'column-select:pagedown'
+  'alt-shift-home': 'column-select:top'
+  'alt-shift-end': 'column-select:bottom'
+
+'.platform-darwin .editor':
+  'ctrl-shift-up': 'column-select:up'
+  'ctrl-shift-down': 'column-select:down'
+  'ctrl-shift-pageup': 'column-select:pageup'
+  'ctrl-shift-pagedown': 'column-select:pagedown'
+  'ctrl-shift-home': 'column-select:top'
+  'ctrl-shift-end': 'column-select:bottom'

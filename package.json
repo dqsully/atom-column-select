@@ -1,0 +1,13 @@
+{
+  "name": "column-select",
+  "main": "./lib/column-select",
+  "version": "0.0.0",
+  "description": "Enhanced column selection.",
+  "repository": "https://github.com/ehuss/atom-column-select",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+  }
+}

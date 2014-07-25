@@ -1,0 +1,16 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Column Select'
+      'submenu': [
+        {'label': 'Up',       'command': 'column-select:up'},
+        {'label': 'Down',     'command': 'column-select:down'},
+        {'label': 'PageUp',   'command': 'column-select:pageup'},
+        {'label': 'PageDown', 'command': 'column-select:pagedown'},
+        {'label': 'Top',      'command': 'column-select:top'},
+        {'label': 'Bottom',   'command': 'column-select:bottom'}
+      ]
+    ]
+  }
+]
