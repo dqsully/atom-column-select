@@ -1,17 +1,17 @@
 module.exports =
 
   activate: ->
-    atom.workspaceView.command "column-select:up", =>
+    atom.workspaceView.command 'column-select:up', '.editor', =>
       @columnSelect false, 1
-    atom.workspaceView.command "column-select:down", =>
+    atom.workspaceView.command 'column-select:down', '.editor', =>
       @columnSelect true, 1
-    atom.workspaceView.command "column-select:pageup", =>
+    atom.workspaceView.command 'column-select:pageup', '.editor', =>
       @columnSelect false, 'page'
-    atom.workspaceView.command "column-select:pagedown", =>
+    atom.workspaceView.command 'column-select:pagedown', '.editor', =>
       @columnSelect true, 'page'
-    atom.workspaceView.command "column-select:top", =>
+    atom.workspaceView.command 'column-select:top', '.editor', =>
       @columnSelect false, 0
-    atom.workspaceView.command "column-select:bottom", =>
+    atom.workspaceView.command 'column-select:bottom', '.editor', =>
       @columnSelect true, 0
 
   allSelectionsAtEnd: (editor, selections) ->
@@ -92,19 +92,19 @@ module.exports =
   #            0 means till the beginning/end.
   columnSelect: (forward, numLines) ->
     # start = process.hrtime()
-    editor = atom.workspace.getActiveEditor()
-    selections = editor.getSelections()
-    groupedRanges = @selectionsToColumns(editor, selections)
-    if numLines == 'page'
-      numLines = editor.getRowsPerPage()
-    else if numLines == 0
-      numLines = editor.getLineCount()
-    atEnd = @allSelectionsAtEnd(editor, selections)
-    for _, tabRanges of groupedRanges
-      if @isUndo(tabRanges, forward)
-        @undoSelect(editor, tabRanges, forward, numLines)
-      else
-        @doSelect(editor, tabRanges, forward, numLines, atEnd)
+    if editor = atom.workspace.getActiveEditor()
+      selections = editor.getSelections()
+      groupedRanges = @selectionsToColumns(editor, selections)
+      if numLines == 'page'
+        numLines = editor.getRowsPerPage()
+      else if numLines == 0
+        numLines = editor.getLineCount()
+      atEnd = @allSelectionsAtEnd(editor, selections)
+      for _, tabRanges of groupedRanges
+        if @isUndo(tabRanges, forward)
+          @undoSelect(editor, tabRanges, forward, numLines)
+        else
+          @doSelect(editor, tabRanges, forward, numLines, atEnd)
     # diff = process.hrtime(start)
     # console.log("#{diff}")
 
