@@ -22,3 +22,6 @@ Compared to the normal column selection in Atom, this does the following:
 * Skips rows that are too short.
 * If you start at the end of a line, then it will stay at the end of each line.
 * Handles tab characters.
+
+[![Build Status](https://travis-ci.org/ehuss/atom-column-select.svg?branch=master)](https://travis-ci.org/ehuss/atom-column-select)
+[![Build status](https://ci.appveyor.com/api/projects/status/0dh6hv85bx2jvmk2)](https://ci.appveyor.com/project/ehuss/atom-column-select)
