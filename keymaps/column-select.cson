@@ -8,7 +8,7 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/advanced/keymaps
 
-'.platform-win32 .atom-text-editor':
+'.platform-win32 atom-workspace atom-text-editor:not([mini])':
   'ctrl-alt-up': 'column-select:up'
   'ctrl-alt-down': 'column-select:down'
   'ctrl-alt-pageup': 'column-select:pageup'
@@ -16,7 +16,7 @@
   'ctrl-alt-home': 'column-select:top'
   'ctrl-alt-end': 'column-select:bottom'
 
-'.platform-linux .atom-text-editor':
+'.platform-linux atom-workspace atom-text-editor:not([mini])':
   'alt-shift-up': 'column-select:up'
   'alt-shift-down': 'column-select:down'
   'alt-shift-pageup': 'column-select:pageup'
@@ -24,9 +24,9 @@
   'alt-shift-home': 'column-select:top'
   'alt-shift-end': 'column-select:bottom'
 
-'.platform-darwin .atom-text-editor':
-  'ctrl-shift-up': 'column-select:up'
+'.platform-darwin atom-workspace atom-text-editor:not([mini])':
   'ctrl-shift-down': 'column-select:down'
+  'ctrl-shift-up': 'column-select:up'
   'ctrl-shift-pageup': 'column-select:pageup'
   'ctrl-shift-pagedown': 'column-select:pagedown'
   'ctrl-shift-home': 'column-select:top'

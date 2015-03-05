@@ -1,4 +1,3 @@
-{WorkspaceView} = require 'atom'
 ColumnSelect = require '../lib/column-select'
 
 PAGE_SIZE = 50
@@ -36,22 +35,17 @@ describe "ColumnSelect", ->
 
   loadBefore = (filename) ->
     beforeEach ->
-      atom.workspaceView = new WorkspaceView
       waitsForPromise ->
         atom.workspace.open(filename)
       waitsForPromise ->
         atom.packages.activatePackage('column-select')
       runs ->
-        editorView = atom.workspaceView.getActiveView()
+        editor = atom.workspace.getActiveTextEditor()
+        editorView = atom.views.getView(editor)
         expect(editorView).not.toBeUndefined()
-        {editor} = editorView
         editor.setLineHeightInPixels(10)
         editor.setHeight(PAGE_SIZE*10)
         expect(editor.getRowsPerPage()).toBe(PAGE_SIZE)
-
-  # beforeEach ->
-  #   atom.workspaceView = new WorkspaceView
-  #   activationPromise = atom.packages.activatePackage('column-select')
 
   describe "basic tests", ->
 
@@ -64,118 +58,118 @@ describe "ColumnSelect", ->
 
     describe "up", ->
       it "should not do anything on first line", ->
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, 'column-select:up')
         checkSelections([{colStart:0, colEnd:0, rowStart:0, rowEnd:0}])
 
       it "should move up in column 0", ->
         editor.setCursorBufferPosition([3, 0])
         checkSelections([
           {colStart:0, colEnd:0, rowStart:3, rowEnd:3}])
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, "column-select:up")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:2, rowEnd:3}])
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, "column-select:up")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:1, rowEnd:3}])
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, "column-select:up")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:3}])
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, "column-select:up")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:3}])
 
     describe "down", ->
       it "should not do anything on last line", ->
-        editorView.trigger("core:move-to-bottom")
+        atom.commands.dispatch(editorView, "core:move-to-bottom")
         lines = editor.getLineCount()
         checkSelections([
           {colStart:0, colEnd:0, rowStart:lines-1, rowEnd:lines-1}])
-        editorView.trigger("column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:lines-1, rowEnd:lines-1}])
 
       it "should move down in column 0", ->
-        editorView.trigger("column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
         checkSelections([{colStart:0, colEnd:0, rowStart:0, rowEnd:1}])
-        editorView.trigger("column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
         checkSelections([{colStart:0, colEnd:0, rowStart:0, rowEnd:2}])
 
     describe "pagedown", ->
       it "should move pages at a time", ->
-        editorView.trigger("column-select:pagedown")
+        atom.commands.dispatch(editorView, "column-select:pagedown")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:PAGE_SIZE}])
-        editorView.trigger("column-select:pagedown")
+        atom.commands.dispatch(editorView, "column-select:pagedown")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:2*PAGE_SIZE}])
-        editorView.trigger("column-select:pagedown")
+        atom.commands.dispatch(editorView, "column-select:pagedown")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:3*PAGE_SIZE}])
 
     describe "pageup", ->
       it "should move pages at a time", ->
-        editorView.trigger("core:move-to-bottom")
+        atom.commands.dispatch(editorView, "core:move-to-bottom")
         lines = editor.getLineCount()
-        editorView.trigger("column-select:pageup")
+        atom.commands.dispatch(editorView, "column-select:pageup")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:lines-PAGE_SIZE-1, rowEnd:lines-1}])
-        editorView.trigger("column-select:pageup")
+        atom.commands.dispatch(editorView, "column-select:pageup")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:lines-2*PAGE_SIZE-1, rowEnd:lines-1}])
-        editorView.trigger("column-select:pageup")
+        atom.commands.dispatch(editorView, "column-select:pageup")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:lines-3*PAGE_SIZE-1, rowEnd:lines-1}])
 
     describe "top", ->
       it "should move to the top", ->
-        editorView.trigger("core:move-to-bottom")
+        atom.commands.dispatch(editorView, "core:move-to-bottom")
         lines = editor.getLineCount()
-        editorView.trigger("column-select:top")
+        atom.commands.dispatch(editorView, "column-select:top")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:lines-1}])
 
     describe "bottom", ->
       it "should move to the bottom", ->
         lines = editor.getLineCount()
-        editorView.trigger("column-select:bottom")
+        atom.commands.dispatch(editorView, "column-select:bottom")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:lines-1}])
 
     describe "undo", ->
       it "should undo down/up", ->
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:up")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:0}])
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:up")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:1}])
 
       it "should undo large jumps", ->
         lines = editor.getLineCount()
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:top")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:top")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:0}])
-        editorView.trigger("column-select:bottom")
-        editorView.trigger("column-select:pageup")
+        atom.commands.dispatch(editorView, "column-select:bottom")
+        atom.commands.dispatch(editorView, "column-select:pageup")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:lines-PAGE_SIZE-1}])
-        editorView.trigger("column-select:top")
+        atom.commands.dispatch(editorView, "column-select:top")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:0, rowEnd:0}])
 
       it "should reverse directions", ->
         editor.setCursorBufferPosition([2*PAGE_SIZE, 0])
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:down")
-        editorView.trigger("column-select:top")
-        editorView.trigger("column-select:up")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:down")
+        atom.commands.dispatch(editorView, "column-select:top")
+        atom.commands.dispatch(editorView, "column-select:up")
         checkSelections([
           {colStart:0, colEnd:0, rowStart:2*PAGE_SIZE-1, rowEnd:2*PAGE_SIZE}])
 
@@ -186,22 +180,22 @@ describe "ColumnSelect", ->
     loadBefore('test-end.txt')
 
     it "should stick to the end per line", ->
-      editor.moveCursorToEndOfLine()
-      editorView.trigger("column-select:down")
+      editor.moveToEndOfLine()
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:3, colEnd:3, rowStart:0, rowEnd:0},
         {colStart:4, colEnd:4, rowStart:1, rowEnd:1}])
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:3, colEnd:3, rowStart:0, rowEnd:0},
         {colStart:4, colEnd:4, rowStart:1, rowEnd:1},
         {colStart:5, colEnd:5, rowStart:2, rowEnd:2}])
-      editorView.trigger("column-select:down")
-      editorView.trigger("column-select:down")
-      editorView.trigger("column-select:down")
-      editorView.trigger("column-select:down")
-      editorView.trigger("column-select:down")
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:3, colEnd:3, rowStart:0, rowEnd:0},
         {colStart:4, colEnd:4, rowStart:1, rowEnd:1},
@@ -214,8 +208,8 @@ describe "ColumnSelect", ->
 
     it "should not be confused by empty lines", ->
       editor.setCursorBufferPosition([4, 0])
-      editorView.trigger("column-select:up")
-      editorView.trigger("column-select:up")
+      atom.commands.dispatch(editorView, "column-select:up")
+      atom.commands.dispatch(editorView, "column-select:up")
       checkSelections([
         {colStart:0, colEnd:0, rowStart:2, rowEnd:4}])
 
@@ -227,29 +221,29 @@ describe "ColumnSelect", ->
 
     it "should skip short lines", ->
       editor.setCursorBufferPosition([0, 6])
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2}])
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
         {colStart:6, colEnd:6, rowStart:4, rowEnd:4}])
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
         {colStart:6, colEnd:6, rowStart:4, rowEnd:4},
         {colStart:6, colEnd:6, rowStart:87, rowEnd:87}])
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
         {colStart:6, colEnd:6, rowStart:4, rowEnd:4},
         {colStart:6, colEnd:6, rowStart:87, rowEnd:87},
         {colStart:6, colEnd:6, rowStart:164, rowEnd:164}])
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
@@ -259,7 +253,7 @@ describe "ColumnSelect", ->
 
     it "should skip short lines (bottom)", ->
       editor.setCursorBufferPosition([0, 6])
-      editorView.trigger("column-select:bottom")
+      atom.commands.dispatch(editorView, "column-select:bottom")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
@@ -269,20 +263,20 @@ describe "ColumnSelect", ->
 
     it "should skip short lines (pagedown)", ->
       editor.setCursorBufferPosition([0, 6])
-      editorView.trigger("column-select:pagedown")
+      atom.commands.dispatch(editorView, "column-select:pagedown")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
         {colStart:6, colEnd:6, rowStart:4, rowEnd:4},
         {colStart:6, colEnd:6, rowStart:87, rowEnd:87}])
-      editorView.trigger("column-select:pagedown")
+      atom.commands.dispatch(editorView, "column-select:pagedown")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
         {colStart:6, colEnd:6, rowStart:4, rowEnd:4},
         {colStart:6, colEnd:6, rowStart:87, rowEnd:87},
         {colStart:6, colEnd:6, rowStart:164, rowEnd:164}])
-      editorView.trigger("column-select:pagedown")
+      atom.commands.dispatch(editorView, "column-select:pagedown")
       checkSelections([
         {colStart:6, colEnd:6, rowStart:0, rowEnd:0},
         {colStart:6, colEnd:6, rowStart:2, rowEnd:2},
@@ -317,7 +311,7 @@ describe "ColumnSelect", ->
         {colStart:16, colEnd:16, rowStart:0, rowEnd:0},
       ]
       checkSelections(sel1)
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       sel2 = [
         {colStart:0, colEnd:2, rowStart:0, rowEnd:1},
 
@@ -335,7 +329,7 @@ describe "ColumnSelect", ->
       ]
       checkSelections(sel2)
 
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       sel3 = [
         {colStart:0, colEnd:2, rowStart:0, rowEnd:2},
 
@@ -357,7 +351,7 @@ describe "ColumnSelect", ->
       ]
       checkSelections(sel3)
 
-      editorView.trigger("column-select:down")
+      atom.commands.dispatch(editorView, "column-select:down")
       sel4 = [
         {colStart:0,  colEnd:2,  rowStart:0, rowEnd:3},
 
@@ -383,9 +377,9 @@ describe "ColumnSelect", ->
       ]
       checkSelections(sel4)
 
-      editorView.trigger("column-select:up")
+      atom.commands.dispatch(editorView, "column-select:up")
       checkSelections(sel3)
-      editorView.trigger("column-select:up")
+      atom.commands.dispatch(editorView, "column-select:up")
       checkSelections(sel2)
-      editorView.trigger("column-select:up")
+      atom.commands.dispatch(editorView, "column-select:up")
       checkSelections(sel1)

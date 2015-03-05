@@ -1,17 +1,17 @@
 module.exports =
 
   activate: ->
-    atom.workspaceView.command 'column-select:up', '.editor', =>
+    atom.commands.add 'atom-text-editor', 'column-select:up', =>
       @columnSelect false, 1
-    atom.workspaceView.command 'column-select:down', '.editor', =>
+    atom.commands.add 'atom-text-editor', 'column-select:down', =>
       @columnSelect true, 1
-    atom.workspaceView.command 'column-select:pageup', '.editor', =>
+    atom.commands.add 'atom-text-editor', 'column-select:pageup', =>
       @columnSelect false, 'page'
-    atom.workspaceView.command 'column-select:pagedown', '.editor', =>
+    atom.commands.add 'atom-text-editor', 'column-select:pagedown', =>
       @columnSelect true, 'page'
-    atom.workspaceView.command 'column-select:top', '.editor', =>
+    atom.commands.add 'atom-text-editor', 'column-select:top', =>
       @columnSelect false, 0
-    atom.workspaceView.command 'column-select:bottom', '.editor', =>
+    atom.commands.add 'atom-text-editor', 'column-select:bottom', =>
       @columnSelect true, 0
 
   allSelectionsAtEnd: (editor, selections) ->
@@ -81,9 +81,8 @@ module.exports =
       tabRange = tabRanges[rangeIndex]
       tabRange.selection.destroy()
       rangeIndex -= 1
-    editorView = atom.workspaceView.getActiveView()
     lastRange = tabRanges[rangeIndex]
-    editorView.scrollToBufferPosition(lastRange.range.start)
+    editor.scrollToBufferPosition(lastRange.range.start)
 
   # Perform the column select command.
   #
@@ -92,7 +91,7 @@ module.exports =
   #            0 means till the beginning/end.
   columnSelect: (forward, numLines) ->
     # start = process.hrtime()
-    if editor = atom.workspace.getActiveEditor()
+    if editor = atom.workspace.getActiveTextEditor()
       selections = editor.getSelections()
       groupedRanges = @selectionsToColumns(editor, selections)
       if numLines == 'page'
@@ -149,7 +148,7 @@ module.exports =
   # - selection - The original Selection.
   makeTabRange: (editor, selection) ->
     range = selection.getBufferRange()
-    line = editor.lineForBufferRow(range.start.row)
+    line = editor.lineTextForBufferRow(range.start.row)
     tabLength = editor.getTabLength()
     visualColumn = 0
     result =
@@ -185,7 +184,7 @@ module.exports =
   #
   # Returns true if the range was completely clipped.
   fixTabRange: (editor, range, visualColumnStart, visualColumnEnd) ->
-    line = editor.lineForBufferRow(range.start.row)
+    line = editor.lineTextForBufferRow(range.start.row)
     tabLength = editor.getTabLength()
     visualColumn = 0
     found = 0
