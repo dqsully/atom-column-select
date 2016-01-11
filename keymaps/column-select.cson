@@ -9,12 +9,12 @@
 # https://atom.io/docs/latest/advanced/keymaps
 
 '.platform-win32 atom-workspace atom-text-editor:not([mini])':
-  'ctrl-alt-up': 'column-select:up'
-  'ctrl-alt-down': 'column-select:down'
-  'ctrl-alt-pageup': 'column-select:pageup'
-  'ctrl-alt-pagedown': 'column-select:pagedown'
-  'ctrl-alt-home': 'column-select:top'
-  'ctrl-alt-end': 'column-select:bottom'
+  'alt-shift-up': 'column-select:up'
+  'alt-shift-down': 'column-select:down'
+  'alt-shift-pageup': 'column-select:pageup'
+  'alt-shift-pagedown': 'column-select:pagedown'
+  'alt-shift-home': 'column-select:top'
+  'alt-shift-end': 'column-select:bottom'
 
 '.platform-linux atom-workspace atom-text-editor:not([mini])':
   'alt-shift-up': 'column-select:up'
