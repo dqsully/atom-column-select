@@ -99,11 +99,20 @@ module.exports =
       else if numLines == 0
         numLines = editor.getLineCount()
       atEnd = @allSelectionsAtEnd(editor, selections)
-      for _, tabRanges of groupedRanges
+
+      if atEnd
+        tabRanges = groupedRanges['end']
         if @isUndo(tabRanges, forward)
           @undoSelect(editor, tabRanges, forward, numLines)
         else
-          @doSelect(editor, tabRanges, forward, numLines, atEnd)
+          @doSelect(editor, tabRanges, forward, numLines, true)
+      else
+        for key, tabRanges of groupedRanges
+          if key != 'end'
+            if @isUndo(tabRanges, forward)
+              @undoSelect(editor, tabRanges, forward, numLines)
+            else
+              @doSelect(editor, tabRanges, forward, numLines, false)
     # diff = process.hrtime(start)
     # console.log("#{diff}")
 
@@ -132,8 +141,13 @@ module.exports =
         # Skip selections that span multiple lines.
         continue
       tabRange = @makeTabRange(editor, selection)
+
       key = [tabRange.tabColumnStart, tabRange.tabColumnEnd]
       rangesInCol = (result[key] or (result[key] = [])).push(tabRange)
+
+      if range.isEmpty() and range.start.column == editor.buffer.lineLengthForRow(range.start.row)
+        key = 'end'
+        rangesInCol = (result[key] or (result[key] = [])).push(tabRange)
     return result
 
   # Calculates the visual column number considering tabs.
