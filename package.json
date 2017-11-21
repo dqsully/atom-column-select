@@ -3,7 +3,7 @@
   "main": "./lib/column-select",
   "version": "0.2.0",
   "description": "Enhanced column selection.",
-  "repository": "https://github.com/ehuss/atom-column-select",
+  "repository": "https://github.com/dqsully/atom-column-select",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
