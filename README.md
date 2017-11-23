@@ -8,12 +8,12 @@ Enhanced column selection for the [Atom](https://atom.io) editor.
 
 | Command | Mac | Windows | Linux |
 | ------- | --- | ------- | ----- |
-| Up | Ctrl-Shift-Up | Ctrl-Alt-Up | Alt-Shift-Up |
-| Down | Ctrl-Shift-Down | Ctrl-Alt-Down | Alt-Shift-Down |
-| PageUp | Ctrl-Shift-PageUp | Ctrl-Alt-PageUp | Alt-Shift-PageUp |
-| PageDown | Ctrl-Shift-PageDown | Ctrl-Alt-PageDown | Alt-Shift-PageDown |
-| Up to top of document. | Ctrl-Shift-Home | Ctrl-Alt-Home | Alt-Shift-Home |
-| Down to bottom of document. | Ctrl-Shift-End | Ctrl-Alt-End | Alt-Shift-End |
+| Up | Ctrl-Shift-Up | Alt-Shift-Up | Alt-Shift-Up |
+| Down | Ctrl-Shift-Down | Alt-Shift-Down | Alt-Shift-Down |
+| PageUp | Ctrl-Shift-PageUp | Alt-Shift-PageUp | Alt-Shift-PageUp |
+| PageDown | Ctrl-Shift-PageDown | Alt-Shift-PageDown | Alt-Shift-PageDown |
+| Up to top of document. | Ctrl-Shift-Home | Alt-Shift-Home | Alt-Shift-Home |
+| Down to bottom of document. | Ctrl-Shift-End | Alt-Shift-End | Alt-Shift-End |
 
 ## Differences
 Compared to the normal column selection in Atom, this does the following:
