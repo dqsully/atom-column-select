@@ -1,7 +1,7 @@
 {
   "name": "column-select",
   "main": "./lib/column-select",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enhanced column selection.",
   "repository": "https://github.com/dqsully/atom-column-select",
   "license": "MIT",
